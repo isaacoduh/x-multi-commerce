@@ -51,8 +51,12 @@ Route::middleware(['auth','role:admin'])->group(function(){
 
 
     Route::controller(BrandController::class)->group(function(){
-        Route::get('/brands/index', 'index')->name('brand.all');
-        Route::post('/brand/create','create')->name('brand.create');
+        Route::get('/brands/index', 'index')->name('brand.index');
+        Route::get('/brand/create','create')->name('brand.create');
+        Route::post('/brand/store','store')->name('brand.store');
+        Route::get('/brand/edit/{id}','edit')->name('brand.edit');
+        Route::post('/brand/update','update')->name('brand.update');
+        Route::get('/brand/delete/{id}','delete')->name('brand.delete');
     });
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
 });
