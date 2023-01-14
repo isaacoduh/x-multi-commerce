@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -47,6 +48,12 @@ Route::middleware(['auth','role:admin'])->group(function(){
     Route::post('/admin/profile/store',[AdminController::class,'saveProfile'])->name('admin.profile.store');
     ROute::get('/admin/change/password',[AdminController::class,'changepassword'])->name('admin.change.password');
     Route::post('/admin/update/password',[AdminController::class,'updatepassword'])->name('update.password');
+
+
+    Route::controller(BrandController::class)->group(function(){
+        Route::get('/brands/index', 'index')->name('brand.all');
+        Route::post('/brand/create','create')->name('brand.create');
+    });
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
 });
 
