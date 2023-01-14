@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -58,6 +60,26 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::post('/brand/update','update')->name('brand.update');
         Route::get('/brand/delete/{id}','delete')->name('brand.delete');
     });
+
+    Route::controller(CategoryController::class)->group(function(){
+        Route::get('/category/index','index')->name('category.index');
+        Route::get('/category/create','create')->name('category.create');
+        Route::post('/category/store','store')->name('category.store');
+        Route::get('/category/edit/{id}','edit')->name('category.edit');
+        Route::post('/category/update','update')->name('category.update');
+        Route::get('/category/delete/{id}','delete')->name('category.delete');
+    });
+
+
+    Route::controller(SubCategoryController::class)->group(function(){
+        Route::get('/subcategory/index','index')->name('subcategory.index');
+        Route::get('/subcategory/create','create')->name('subcategory.create');
+        Route::post('/subcategory/store','store')->name('subcategory.store');
+        Route::get('/subcategory/edit/{id}','edit')->name('subcategory.edit');
+        Route::post('/subcategory/update','update')->name('subcategory.update');
+        Route::get('/subcategory/delete/{id}','delete')->name('subcategory.delete');
+    });
+
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
 });
 
