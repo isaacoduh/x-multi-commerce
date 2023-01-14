@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,12 +18,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.index');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+ROute::middleware(['auth'])->group(function(){
+    Route::get('/dashboard',[UserController::class,'dashboard'])->name('dashboard');
+    Route::post('/user/profile/store', [UserController::class, 'profilestore'])->name('user.profile.store');
+    Route::post('/user/update/password', [UserController::class,'updatepassword'])->name('user.update.password');
+    Route::get('/user/logout',[UserController::class,'logout'])->name('user.logout');
+});
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 require __DIR__.'/auth.php';
 
 // Route::middleware('auth')->group(function () {
