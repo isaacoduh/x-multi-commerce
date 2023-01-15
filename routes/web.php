@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,6 +81,15 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::get('/subcategory/delete/{id}','delete')->name('subcategory.delete');
     });
 
+    Route::controller(AdminController::class)->group(function(){
+        Route::get('/inactive/vendor','inactiveVendor')->name('inactive.vendor');
+        Route::get('/active/vendor','activeVendor')->name('active.vendor');
+        Route::get('/inactive/vendor/details/{id}','inactiveVendorDetails')->name('inactive.vendor.details');
+        Route::post('/active/vendor/approve','activeVendorApprove')->name('active.vendor.approve');
+        Route::get('/active/vendor/details/{id}','activeVendorDetails')->name('active.vendor.details');
+        Route::post('/inactive/vendor/approve','inactiveVendorApprove')->name('inactive.vendor.approve');
+    });
+
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
 });
 
@@ -95,7 +105,11 @@ Route::middleware(['auth','role:vendor'])->group(function(){
     Route::get('/vendor/logout', [VendorController::class,'logout'])->name('vendor.logout');
 });
 
-Route::get('/admin/login',[AdminController::class,'login']);
-Route::get('/vendor/login',[VendorController::class,'login']);
+Route::get('/admin/login',[AdminController::class,'login'])->middleware(RedirectIfAuthenticated::class);
+Route::get('/vendor/login',[VendorController::class,'login'])->name('vendor.login')->middleware(RedirectIfAuthenticated::class);
+
+
+Route::get('/vendor/signup',[VendorController::class,'vendorSignup'])->name('vendor.signup');
+Route::post('/vendor/register',[VendorController::class,'register'])->name('vendor.register');
 
 
