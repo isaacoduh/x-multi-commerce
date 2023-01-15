@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
@@ -79,6 +80,7 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::get('/subcategory/edit/{id}','edit')->name('subcategory.edit');
         Route::post('/subcategory/update','update')->name('subcategory.update');
         Route::get('/subcategory/delete/{id}','delete')->name('subcategory.delete');
+        ROute::get('/subcategory/ajax/{category_id}','getSubCategory');
     });
 
     Route::controller(AdminController::class)->group(function(){
@@ -88,6 +90,21 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::post('/active/vendor/approve','activeVendorApprove')->name('active.vendor.approve');
         Route::get('/active/vendor/details/{id}','activeVendorDetails')->name('active.vendor.details');
         Route::post('/inactive/vendor/approve','inactiveVendorApprove')->name('inactive.vendor.approve');
+    });
+
+    Route::controller(ProductController::class)->group(function(){
+        Route::get('/product/index', 'index')->name('product.index');
+        Route::get('/product/create','create')->name('product.create');
+        Route::post('/product/store','store')->name('product.store');
+        Route::get('/product/edit/{id}','edit')->name('product.edit');
+        Route::post('/product/update','update')->name('product.update');
+        Route::post('/product/update/thumbnail','updateProductThumbnail')->name('product.update.thumbnail');
+        Route::post('/product/update/multiimage','updateProductMultipleImage')->name('product.update.multiimage');
+        Route::get('/product/multiimg/delete/{id}','multiImageDelete')->name('product.multiimg.delete');
+
+        Route::get('/product/inactive/{id}' , 'ProductInactive')->name('product.inactive');
+        Route::get('/product/active/{id}' , 'ProductActive')->name('product.active');
+        Route::get('/product/delete/{id}' , 'ProductDelete')->name('product.delete');
     });
 
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
