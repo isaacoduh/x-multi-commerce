@@ -11,6 +11,8 @@ use App\Http\Controllers\VendorController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Vendor\ProductController as VendorProductController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -120,6 +122,28 @@ Route::middleware(['auth','role:vendor'])->group(function(){
     Route::post('/vendor/change/password',[VendorController::class,'changepassword'])->name('vendor.update.password');
 
     Route::get('/vendor/logout', [VendorController::class,'logout'])->name('vendor.logout');
+
+
+    Route::controller(VendorProductController::class)->group(function(){
+        Route::get('/vendor/product/all', 'index')->name('vendor.product.index');
+        Route::get('/vendor/product/create','create')->name('vendor.product.create');
+
+        Route::post('/vendor/product/store', 'store')->name('vendor.product.store');
+        Route::get('/vendor/product/edit/{id}','edit')->name('vendor.product.edit');
+        Route::post('/vendor/product/update','update')->name('vendor.product.update');
+        Route::post('/vendor/product/update/thumbnail','updateProductThumbnail')->name('vendor.product.update.thumbnail');
+
+        Route::post('/vendor/product/update/multiimage' , 'updateProductMultipleImage')->name('vendor.product.update.multiimage');
+
+        Route::get('/vendor/product/multiimg/delete/{id}','multiImageDelete')->name('vendor.product.multiimg.delete');
+        Route::get('/vendor/product/inactive/{id}' , 'VendorProductInactive')->name('vendor.product.inactive');
+        Route::get('/vendor/product/active/{id}' , 'VendorProductActive')->name('vendor.product.active');
+
+        Route::get('/vendor/delete/product/{id}' , 'VendorProductDelete')->name('vendor.product.delete');
+
+        Route::get('/vendor/subcategory/ajax/{category_id}' , 'vendorGetSubCategory');
+
+    });
 });
 
 Route::get('/admin/login',[AdminController::class,'login'])->middleware(RedirectIfAuthenticated::class);
