@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\SubCategory;
 use App\Models\ProdImage;
 use App\Models\Product;
 use App\Models\User;
@@ -64,4 +65,26 @@ class IndexController extends Controller
         return view('frontend.vendor.vendor_all',compact('vendors'));
 
      }
+
+     public function CatWiseProduct(Request $request,$id,$slug){
+        $products = Product::where('status',1)->where('category_id',$id)->orderBy('id','DESC')->get();
+        $categories = Category::orderBy('category_name','ASC')->get();
+
+        $breadcat = Category::where('id',$id)->first();
+        $newProduct = Product::orderBy('id','DESC')->limit(3)->get();
+
+        return view('frontend.product.category_view',compact('products','categories','breadcat','newProduct'));
+
+       }
+
+       public function SubCatWiseProduct(Request $request,$id,$slug){
+        $products = Product::where('status',1)->where('subcategory_id',$id)->orderBy('id','DESC')->get();
+        $categories = Category::orderBy('category_name','ASC')->get();
+
+        $breadsubcat = SubCategory::where('id',$id)->first();
+
+        $newProduct = Product::orderBy('id','DESC')->limit(3)->get();
+
+        return view('frontend.product.subcategory_view',compact('products','categories','breadsubcat','newProduct'));
+    }
 }
