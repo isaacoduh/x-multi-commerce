@@ -177,3 +177,6 @@ Route::post('/vendor/register',[VendorController::class,'register'])->name('vend
 
 
 Route::get('/product/details/{id}/{slug}', [IndexController::class,'details']);
+Route::get('/vendor/all', [IndexController::class, 'VendorAll'])->name('vendor.all');
+Route::get('/vendor/details/{id}',[IndexController::class,'vendorDetails'])->name('vendor.details');
+
