@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 
+
+
+use App\Http\Controllers\Front\IndexController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,9 +30,7 @@ use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 |
 */
 
-Route::get('/', function () {
-    return view('frontend.index');
-});
+Route::get('/', [IndexController::class, 'index']);
 
 ROute::middleware(['auth'])->group(function(){
     Route::get('/dashboard',[UserController::class,'dashboard'])->name('dashboard');
@@ -174,3 +176,4 @@ Route::get('/vendor/signup',[VendorController::class,'vendorSignup'])->name('ven
 Route::post('/vendor/register',[VendorController::class,'register'])->name('vendor.register');
 
 
+Route::get('/product/details/{id}/{slug}', [IndexController::class,'details']);
