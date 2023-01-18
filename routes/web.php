@@ -20,6 +20,7 @@ use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 use App\Http\Controllers\Front\IndexController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\User\WishlistController;
+use App\Http\Controllers\User\CompareController;
 
 /*
 |--------------------------------------------------------------------------
@@ -196,5 +197,20 @@ Route::middleware(['auth','role:user'])->group(function(){
         Route::get('/wishlist','AllWishlist')->name('wishlist');
         Route::get('/get-wishlist-product','GetWishlistProduct');
         Route::get('/wishlist-remove/{id}' , 'WishlistRemove');
+    });
+
+    Route::controller(CompareController::class)->group(function(){
+        Route::get('/compare' , 'AllCompare')->name('compare');
+        Route::get('/get-compare-product' , 'GetCompareProduct');
+       Route::get('/compare-remove/{id}' , 'CompareRemove');
+
+    });
+
+    Route::controller(CartController::class)->group(function(){
+        Route::get('/mycart', 'MyCart')->name('mycart');
+        Route::get('/get-cart-product' , 'GetCartProduct');
+        Route::get('/cart-remove/{rowId}' , 'CartRemove');
+        Route::get('/cart-increment/{rowId}' , 'CartIncrement');
+        Route::get('/cart-decrement/{rowId}' , 'CartDecrement');
     });
 });
