@@ -19,6 +19,7 @@ use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 
 use App\Http\Controllers\Front\IndexController;
 use App\Http\Controllers\Front\CartController;
+use App\Http\Controllers\User\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -187,3 +188,13 @@ Route::get('/product/view/modal/{id}', [IndexController::class, 'ProductViewAjax
 Route::post('/cart/data/store/{id}', [CartController::class,'AddToCart']);
 Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
 Route::post('/dcart/data/store/{id}', [CartController::class, 'AddToCartDetails']);
+Route::post('/add-to-wishlist/{product_id}',[WishlistController::class, 'AddToWishList']);
+
+
+Route::middleware(['auth','role:user'])->group(function(){
+    Route::controller(WishlistController::class)->group(function(){
+        Route::get('/wishlist','AllWishlist')->name('wishlist');
+        Route::get('/get-wishlist-product','GetWishlistProduct');
+        Route::get('/wishlist-remove/{id}' , 'WishlistRemove');
+    });
+});
