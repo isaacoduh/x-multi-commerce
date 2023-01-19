@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -142,6 +143,22 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::get('/coupon/edit/{id}','edit')->name('coupon.edit');
         Route::post('/coupon/update','update')->name('coupon.update');
         Route::get('/coupon/delete/{id}','delete')->name('coupon.delete');
+    });
+
+    Route::controller(LocationController::class)->group(function(){
+        Route::get('/state/index','stateIndex')->name('state.index');
+        Route::get('/state/create','createState')->name('state.create');
+        Route::post('/state/store','storeState')->name('state.store');
+        Route::get('/state/edit/{id}','editState')->name('state.edit');
+        Route::post('/state/update','updateState')->name('state.update');
+        Route::get('/state/delete/{id}','deleteState')->name('state.delete');
+
+        Route::get('/area/index','areaIndex')->name('area.index');
+        Route::get('/area/create','createArea')->name('area.create');
+        Route::post('/area/store','storeArea')->name('area.store');
+        Route::get('/area/edit/{id}','editArea')->name('area.edit');
+        Route::post('/area/update','updateArea')->name('area.update');
+        Route::get('/area/delete/{id}','deleteArea')->name('area.delete');
     });
 
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');

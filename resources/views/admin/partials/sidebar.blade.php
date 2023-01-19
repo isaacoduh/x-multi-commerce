@@ -124,6 +124,25 @@
             </ul>
         </li>
 
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bx bx-category"></i>
+                </div>
+                <div class="menu-title">Location Management</div>
+            </a>
+            <ul>
+                <li> <a href="{{ route('state.index') }}"><i class="bx bx-right-arrow-alt"></i>All States</a>
+                </li>
+                <li> <a href="{{ route('state.create') }}"><i class="bx bx-right-arrow-alt"></i>Add State</a>
+                </li>
+                <li> <a href="{{ route('area.index') }}"><i class="bx bx-right-arrow-alt"></i>All  Areas</a>
+                </li>
+                <li> <a href="{{ route('area.create') }}"><i class="bx bx-right-arrow-alt"></i>Add Area</a>
+                </li>
+
+            </ul>
+        </li>
+
         <li class="menu-label">UI Elements</li>
         <li>
             <a href="javascript:;" class="has-arrow">
