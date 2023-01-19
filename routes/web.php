@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -132,6 +133,15 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::get('/banner/edit/{id}','edit')->name('banner.edit');
         Route::post('/banner/update','update')->name('banner.update');
         Route::get('/banner/delete/{id}','delete')->name('banner.delete');
+    });
+
+    Route::controller(CouponController::class)->group(function(){
+        Route::get('/coupon/index','index')->name('coupon.index');
+        Route::get('/coupon/create','create')->name('coupon.create');
+        Route::post('/coupon/store','store')->name('coupon.store');
+        Route::get('/coupon/edit/{id}','edit')->name('coupon.edit');
+        Route::post('/coupon/update','update')->name('coupon.update');
+        Route::get('/coupon/delete/{id}','delete')->name('coupon.delete');
     });
 
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
