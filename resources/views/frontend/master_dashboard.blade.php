@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css?v=5.3') }}" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
 
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 
 <body>
@@ -134,6 +135,7 @@
             $('#pcategory').text(data.product.category.category_name);
             $('#pbrand').text(data.product.brand.brand_name);
             $('#pimage').attr('src','/'+data.product.product_thambnail );
+            $('#pvendor_id').text(data.product.vendor_id);
 
             $('#product_id').val(id);
             $('#qty').val(1);
@@ -204,6 +206,7 @@
 
      var product_name = $('#pname').text();
      var id = $('#product_id').val();
+     var vendor = $('#pvendor_id').text();
      var color = $('#color option:selected').text();
      var size = $('#size option:selected').text();
      var quantity = $('#qty').val();
@@ -211,7 +214,7 @@
         type: "POST",
         dataType : 'json',
         data:{
-            color:color, size:size, quantity:quantity,product_name:product_name
+            color:color, size:size, quantity:quantity,product_name:product_name,vendor:vendor
         },
         url: "/cart/data/store/"+id,
         success:function(data){
@@ -258,6 +261,7 @@
 
      var product_name = $('#dpname').text();
      var id = $('#dproduct_id').val();
+     var vendor = $('#vprodudct_id').val();
      var color = $('#dcolor option:selected').text();
      var size = $('#dsize option:selected').text();
      var quantity = $('#dqty').val();
@@ -265,7 +269,7 @@
         type: "POST",
         dataType : 'json',
         data:{
-            color:color, size:size, quantity:quantity,product_name:product_name
+            color:color, size:size, quantity:quantity,product_name:product_name,vendor:vendor
         },
         url: "/dcart/data/store/"+id,
         success:function(data){

@@ -24,6 +24,7 @@ use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\WishlistController;
 use App\Http\Controllers\User\CompareController;
+use App\Http\Controllers\User\StripeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -251,5 +252,9 @@ Route::middleware(['auth','role:user'])->group(function(){
     Route::controller(CheckoutController::class)->group(function(){
         Route::get('/areas/ajax/{state_id}', 'GetAreaForStateAjax');
         Route::post('/checkout/store','CheckoutStore')->name('checkout.store');
+    });
+
+    Route::controller(StripeController::class)->group(function(){
+        Route::post('/stripe/order', 'StripeOrder')->name('stripe.order');
     });
 });
