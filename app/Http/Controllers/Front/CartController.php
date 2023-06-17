@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ShipmentState;
 use Carbon\Carbon;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -233,5 +235,30 @@ class CartController extends Controller
     {
         Session::forget('coupon');
         return response()->json(['success' => 'Coupon Remove Successfully']);
+    }
+
+    public function CheckoutCreate()
+    {
+        if(Auth::check()){
+            if(Cart::total() > 0){
+                $carts = Cart::content();
+                $cartQty = Cart::count();
+                $cartTotal = Cart::total();
+                $states = ShipmentState::orderBy('state_name','ASC')->get();
+                return view('frontend.checkout.checkout_view', compact('carts','cartQty','cartTotal','states'));
+            } else {
+                $notification = array(
+                    'message' => 'Add a product',
+                    'alert-type' => 'error'
+                );
+                return redirect()->to('/')->with($notification);
+            }
+        } else {
+            $notification = array(
+                'message' => 'You need to login first',
+                'alert-type' => 'error'
+            );
+        }
+        return redirect()->route('login')->with($notification);
     }
 }
