@@ -79,4 +79,60 @@ class StripeController extends Controller
         $notification = array('message' => 'Your Order was placed Successfully', 'alert-type' => 'success');
         return redirect()->route('dashboard')->with($notification);
     }
+
+    public function CashOrder(Request $request)
+    {
+        if(Session::has('coupon')){
+            $total_amount = Session::get('coupon')['total_amount']; 
+        } else {
+            $total_amount = round(floatval(Cart::total()));
+        }
+
+        $order_id = Order::insertGetId([
+            'user_id' => Auth::id(),
+            'area_id' => $request->area_id,
+            'state_id' => $request->state_id,
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'adress' => $request->address,
+            'post_code' => $request->post_code,
+            'notes' => $request->notes,
+            'payment_type' => 'Cash on Delivery',
+            'payment_method' => 'Cash on Delivery',
+            'currency' => 'Usd',
+            'amount' => $total_amount,
+            'invoice_no' => 'EOS'.mt_rand(10000000,99999999),
+            'order_date' => Carbon::now()->format('d F Y'),
+            'order_month' => Carbon::now()->format('F'),
+            'order_year' => Carbon::now()->format('Y'), 
+            'status' => 'pending',
+            'created_at' => Carbon::now(), 
+        ]);
+
+        $carts = Cart::content();
+        foreach($carts as $cart){
+            
+            OrderItem::insert([
+                'order_id' => $order_id,
+                'product_id' => $cart->id,
+                'vendor_id' => $cart->options->vendor,
+                'color' => $cart->options->color,
+                'size' => $cart->options->size,
+                'qty' => $cart->qty,
+                'price' => $cart->price,
+                'created_at' =>Carbon::now(),
+
+            ]);
+
+        }
+        if (Session::has('coupon')) {
+           Session::forget('coupon');
+        }
+
+        Cart::destroy();
+
+        $notification = array('message' => 'Your Order was placed Successfully', 'alert-type' => 'success');
+        return redirect()->route('dashboard')->with($notification);
+    }
 }
