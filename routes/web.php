@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -16,6 +17,7 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
+use App\Http\Controllers\Vendor\OrderController as VendorOrderController;
 
 
 
@@ -163,6 +165,10 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::get('/area/delete/{id}','deleteArea')->name('area.delete');
     });
 
+    Route::controller(OrderController::class)->group(function(){
+        Route::get('/pending/order', 'PendingOrder')->name('pending.order');
+    });
+
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
 });
 
@@ -197,6 +203,10 @@ Route::middleware(['auth','role:vendor'])->group(function(){
 
         Route::get('/vendor/subcategory/ajax/{category_id}' , 'vendorGetSubCategory');
 
+    });
+
+    Route::controller(VendorOrderController::class)->group(function(){
+        Route::get('/vendor/order','VendorOrder')->name('vendor.order');
     });
 });
 
