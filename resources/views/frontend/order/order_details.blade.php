@@ -127,7 +127,7 @@
 
                      <tr>
                         <th>Order Status:</th>
-      <th><span class="badge rounded-pill bg-warning">{{ $order->status }}</span></th>
+      <th><span class="badge bg-danger" style="font-size: 15px;">{{ $order->status }}</span></th>
                     </tr>
                     
                 </table>
@@ -193,7 +193,7 @@
         @foreach($orderItem as $item)
          <tr>
             <td class="col-md-1">
-                <label><img src="{{ asset($item->product->product_thambnail) }}" style="width:50px; height:50px;" > </label>
+                <label><img src="{{ asset($item->product->product_thumbnail) }}" style="width:50px; height:50px;" > </label>
             </td>
             <td class="col-md-2">
                 <label>{{ $item->product->product_name }}</label>
