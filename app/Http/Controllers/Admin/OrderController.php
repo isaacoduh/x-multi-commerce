@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -42,8 +43,9 @@ class OrderController extends Controller
 
     public function updatePendingToConfirm($order_id)
     {
-        Order::findOrFail($order_id)->update(['status' => 'confirm']);
+        Order::findOrFail($order_id)->update(['status' => 'confirmed']);
         $notification = array('message' => 'Order Confirmed!','alert-type' => 'success');
+        return redirect()->route('admin.confirmed.order')->with($notification);
     }
 
     public function updateConfirmToProcessing($order_id)
@@ -64,5 +66,16 @@ class OrderController extends Controller
             'alert-type' => 'success'
         );
         return redirect()->route('admin.delivered.order')->with($notification);
+    }
+
+    public function AdminInvoiceDownload($order_id)
+    {
+        $order = Order::with('state','area','user')->where('id',$order_id)->first();
+        $orderItem = OrderItem::with('product')->where('order_id',$order_id)->orderBy('id','DESC')->get();
+        $pdf = Pdf::loadView('admin.orders.admin_order_invoice',compact('order','orderItem'))->setPaper('a4')->setOption([
+            'tempDir' => public_path(),
+            'chroot' => public_path()
+        ]);
+        return $pdf->download('invoice.pdf');
     }
 }
