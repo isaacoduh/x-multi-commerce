@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use DateTime;
 
@@ -37,5 +38,19 @@ class ReportController extends Controller
         $year = $request->year;
         $orders = Order::where('order_year',$year)->latest()->get();
         return view('admin.report.report_by_year',compact('orders','year'));
+    }
+
+    public function OrderByUser()
+    {
+        $users = User::where('role','user')->latest()->get();
+        return view('admin.report.report_by_user', compact('users'));
+    }
+
+    public function SearchByUser(Request $request)
+    {
+        $users = $request->user;
+        $orders = Order::where('user_id', $users)->latest()->get();
+
+        return view('admin.report.report_by_user_show',compact('orders','users'));
     }
 }

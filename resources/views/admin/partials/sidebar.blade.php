@@ -191,10 +191,38 @@
         </li>
 
         <li>
-            <a href="{{route('report.view')}}" class="has-arrow">
-						<div class="parent-icon"><i class="bx bx-category"></i><div class="menu-title">Manage Reports</div>
+					<a href="javascript:;" class="has-arrow">
+						<div class="parent-icon"><i class="bx bx-category"></i>
+						</div>
+						<div class="menu-title">Reports Manage</div>
 					</a>
-        </li>
+					<ul>
+						<li> <a href="{{ route('report.view') }}"><i class="bx bx-right-arrow-alt"></i>Report View</a>
+						</li>
+
+							<li> <a href="{{ route('order.by.user') }}"><i class="bx bx-right-arrow-alt"></i>Order By User</a>
+						</li>
+						 
+						 
+					</ul>
+				</li>
+
+                	<li>
+					<a href="javascript:;" class="has-arrow">
+						<div class="parent-icon"><i class="bx bx-category"></i>
+						</div>
+						<div class="menu-title">User Manage</div>
+					</a>
+					<ul>
+						<li> <a href="{{ route('all-user') }}"><i class="bx bx-right-arrow-alt"></i>All User</a>
+						</li>
+
+							<li> <a href="{{ route('all-vendor') }}"><i class="bx bx-right-arrow-alt"></i>All Vendor</a>
+						</li>
+
+
+					</ul>
+				</li
 
         <li>
             <a href="javascript:;" class="has-arrow">

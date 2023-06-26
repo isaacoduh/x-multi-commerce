@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReturnController;
+use App\Http\Controllers\Admin\UserController as AdminManageUserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -192,6 +193,15 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::post('/search/by/date','SearchByDate')->name('search-by-date');
         Route::post('/search/by/month','SearchByMonth')->name('search-by-month');
         Route::post('/search/by/year' , 'SearchByYear')->name('search-by-year');
+        Route::post('/search/by/year' , 'SearchByYear')->name('search-by-year');
+
+        Route::get('/order/by/user' , 'OrderByUser')->name('order.by.user');
+        Route::post('/search/by/user' , 'SearchByUser')->name('search-by-user');
+    });
+
+    Route::controller(AdminManageUserController::class)->group(function(){
+        Route::get('/all/user','AllUser')->name('all-user');
+        Route::get('/all/vendor' , 'AllVendor')->name('all-vendor');
     });
 
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
