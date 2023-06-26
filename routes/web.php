@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ReturnController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -177,6 +178,12 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::get('/confirm/processing/{order_id}' , 'ConfirmToProcess')->name('confirm-processing');
         Route::get('/processing/delivered/{order_id}' , 'ProcessToDelivered')->name('processing-delivered');
         Route::get('/admin/invoice/download/{order_id}','AdminInvoiceDownload')->name('admin.invoice.download');
+    });
+
+    Route::controller(ReturnController::class)->group(function(){
+        Route::get('/return/request','ReturnRequest')->name('return.request');
+        Route::get('/return/request/approved/{order_id}','ReturnRequestApproved')->name('return.request.approved');
+        Route::get('/complete/return/request' , 'CompleteReturnRequest')->name('complete.return.request');
     });
 
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
