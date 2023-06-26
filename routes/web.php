@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReturnController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
@@ -184,6 +185,13 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::get('/return/request','ReturnRequest')->name('return.request');
         Route::get('/return/request/approved/{order_id}','ReturnRequestApproved')->name('return.request.approved');
         Route::get('/complete/return/request' , 'CompleteReturnRequest')->name('complete.return.request');
+    });
+
+    Route::controller(ReportController::class)->group(function(){
+        Route::get('/report/view','ReportView')->name('report.view');
+        Route::post('/search/by/date','SearchByDate')->name('search-by-date');
+        Route::post('/search/by/month','SearchByMonth')->name('search-by-month');
+        Route::post('/search/by/year' , 'SearchByYear')->name('search-by-year');
     });
 
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
