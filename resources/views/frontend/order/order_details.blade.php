@@ -127,7 +127,7 @@
 
                      <tr>
                         <th>Order Status:</th>
-      <th><span class="badge rounded-pill bg-warning">{{ $order->status }}</span></th>
+      <th><span class="badge bg-danger" style="font-size: 15px;">{{ $order->status }}</span></th>
                     </tr>
                     
                 </table>
@@ -193,7 +193,7 @@
         @foreach($orderItem as $item)
          <tr>
             <td class="col-md-1">
-                <label><img src="{{ asset($item->product->product_thambnail) }}" style="width:50px; height:50px;" > </label>
+                <label><img src="{{ asset($item->product->product_thumbnail) }}" style="width:50px; height:50px;" > </label>
             </td>
             <td class="col-md-2">
                 <label>{{ $item->product->product_name }}</label>
@@ -243,6 +243,29 @@
 
     </tbody>
 </table>
+
+@if ($order->status !== 'delivered')
+@else
+@php
+$order = App\Models\Order::where('id',$order->id)->where('return_reason','=',NULL)->first();
+@endphp
+
+@if($order)
+<form action="{{ route('return.order',$order->id) }}" method="post">
+    @csrf
+
+ <div class="form-group" style=" font-weight: 600; font-size: initial; color: #000000; ">
+                    <label>Order Return Reason</label>
+             <textarea name="return_reason" class="form-control"  style="width:40%;"></textarea>
+                </div>
+    <button type="submit" class="btn-sm btn-danger" style="width:40%;">Order Return</button>
+</form>
+
+@else
+
+<h5><span class=" " style="color:red;">You have send return request for this product</span></h5><br><br>
+@endif
+@endif
                         
                     </div>
                     

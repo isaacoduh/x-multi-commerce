@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ReturnController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -168,6 +169,21 @@ Route::middleware(['auth','role:admin'])->group(function(){
 
     Route::controller(OrderController::class)->group(function(){
         Route::get('/pending/order', 'PendingOrder')->name('pending.order');
+        Route::get('/admin/order/details/{order_id}', 'AdminOrderDetails')->name('admin.order.details');
+        Route::get('/admin/confirmed/order' , 'AdminConfirmedOrder')->name('admin.confirmed.order');
+        Route::get('/admin/processing/order' , 'AdminProcessingOrder')->name('admin.processing.order');
+        Route::get('/admin/delivered/order' , 'AdminDeliveredOrder')->name('admin.delivered.order');
+
+        Route::get('/pending/confirm/{order_id}','updatePendingToConfirm')->name('pending-confirm');
+        Route::get('/confirm/processing/{order_id}' , 'ConfirmToProcess')->name('confirm-processing');
+        Route::get('/processing/delivered/{order_id}' , 'ProcessToDelivered')->name('processing-delivered');
+        Route::get('/admin/invoice/download/{order_id}','AdminInvoiceDownload')->name('admin.invoice.download');
+    });
+
+    Route::controller(ReturnController::class)->group(function(){
+        Route::get('/return/request','ReturnRequest')->name('return.request');
+        Route::get('/return/request/approved/{order_id}','ReturnRequestApproved')->name('return.request.approved');
+        Route::get('/complete/return/request' , 'CompleteReturnRequest')->name('complete.return.request');
     });
 
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
@@ -276,5 +292,7 @@ Route::middleware(['auth','role:user'])->group(function(){
         Route::get('/user/order/page','UserOrderPage')->name('user.order.page');
         Route::get('/user/order_details/{order_id}','UserOrderDetails');
         Route::get('/user/invoice_download/{order_id}' , 'UserOrderInvoice');  
+        Route::post('/return/order/{order_id}','ReturnOrder')->name('return.order');
+        Route::get('/return/order/page' , 'ReturnOrderPage')->name('return.order.page');
     });
 });
