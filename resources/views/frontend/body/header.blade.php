@@ -62,7 +62,8 @@
                 </div>
 <div class="header-right">
     <div class="search-style-2">
-        <form action="#">
+        <form action="{{ route('product.search') }}" method="post">
+        @csrf
             <select class="select-active">
                 <option>All Categories</option>
                 <option>Milks and Dairies</option>
@@ -76,7 +77,7 @@
                 <option>Noodles & Rice</option>
                 <option>Ice cream</option>
             </select>
-            <input type="text" placeholder="Search for items..." />
+            <input name="search" placeholder="Search for items..." />
         </form>
     </div>
     <div class="header-action-right">

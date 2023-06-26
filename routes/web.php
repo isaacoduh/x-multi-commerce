@@ -302,6 +302,10 @@ Route::controller(ReviewController::class)->group(function(){
     Route::post('/store/review','StoreReview')->name('store.review');
 });
 
+Route::controller(IndexController::class)->group(function(){
+    Route::post('/search','ProductSearch')->name('product.search');
+});
+
 Route::middleware(['auth','role:user'])->group(function(){
     Route::controller(WishlistController::class)->group(function(){
         Route::get('/wishlist','AllWishlist')->name('wishlist');
