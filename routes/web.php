@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReturnController;
 use App\Http\Controllers\Admin\UserController as AdminManageUserController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 use App\Http\Controllers\Vendor\OrderController as VendorOrderController;
+use App\Http\Controllers\Vendor\ReviewController as VendorReviewController;
 
 
 
@@ -29,6 +31,7 @@ use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\WishlistController;
 use App\Http\Controllers\User\CompareController;
+use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\StripeController;
 use App\Http\Controllers\User\UserController as AllUserController;
 
@@ -204,6 +207,13 @@ Route::middleware(['auth','role:admin'])->group(function(){
         Route::get('/all/vendor' , 'AllVendor')->name('all-vendor');
     });
 
+    Route::controller(AdminReviewController::class)->group(function(){
+        Route::get('/pending/review','PendingReview')->name('pending.review');
+        Route::get('/review/approve/{id}' , 'ReviewApprove')->name('review.approve');
+        Route::get('/publish/review' , 'PublishReview')->name('publish.review'); 
+        Route::get('/review/delete/{id}' , 'ReviewDelete')->name('review.delete');
+    });
+
     Route::get('/admin/logout', [AdminController::class,'logout'])->name('admin.logout');
 });
 
@@ -246,6 +256,10 @@ Route::middleware(['auth','role:vendor'])->group(function(){
         Route::get('/vendor/complete/return/order','VendorCompleteReturnOrder')->name('vendor.complete.return.order');
         Route::get('/vendor/order/details/{order_id}','VendorOrderDetails')->name('vendor.order.details');
     });
+
+    Route::controller(VendorReviewController::class)->group(function(){
+        Route::get('/vendor/all/review','VendorAllReview')->name('vendor.all.review');
+    });
 });
 
 Route::get('/admin/login',[AdminController::class,'login'])->middleware(RedirectIfAuthenticated::class);
@@ -275,13 +289,18 @@ Route::get('/coupon-remove',[CartController::class,'removeCoupon']);
 
 Route::get('/checkout', [CartController::class,'CheckoutCreate'])->name('checkout');
 
+
 Route::controller(CartController::class)->group(function(){
         Route::get('/mycart', 'MyCart')->name('mycart');
         Route::get('/get-cart-product' , 'GetCartProduct');
         Route::get('/cart-remove/{rowId}' , 'CartRemove');
         Route::get('/cart-increment/{rowId}' , 'CartIncrement');
         Route::get('/cart-decrement/{rowId}' , 'CartDecrement');
-    });
+});
+
+Route::controller(ReviewController::class)->group(function(){
+    Route::post('/store/review','StoreReview')->name('store.review');
+});
 
 Route::middleware(['auth','role:user'])->group(function(){
     Route::controller(WishlistController::class)->group(function(){
